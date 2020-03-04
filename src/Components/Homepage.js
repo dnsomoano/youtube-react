@@ -32,9 +32,10 @@ export class Homepage extends Component {
         {this.state.videos.map((video, idx) => {
           return (
             <div key={idx} className="box">
-              <div>{video.snippet.title}</div>
               <div>
-                <Link to={`/v=${video.id.videoId}`}>
+                <Link
+                  to={`/${video.snippet.channelTitle}/${video.snippet.title}/v=${video.id.videoId}`}
+                >
                   <img
                     src={`${video.snippet.thumbnails.high.url}`}
                     alt={video.id.videoId}
@@ -42,8 +43,15 @@ export class Homepage extends Component {
                 </Link>
               </div>
               {/* <div>{video.snippet.publishedAt}</div> */}
-              <div>{video.snippet.channelTitle}</div>
-              <div>{video.snippet.description}</div>
+              <div className="title-spacing">
+                <Link
+                  to={`/${video.snippet.channelTitle}/${video.snippet.title}/v=${video.id.videoId}`}
+                >
+                  <h1 className="title">{video.snippet.title}</h1>
+                </Link>
+                <h4 className="title">{video.snippet.channelTitle}</h4>
+                {video.snippet.description}
+              </div>
             </div>
           );
         })}
