@@ -3,8 +3,8 @@
 }
 
 .App-logo {
-  max-width: 150px;
-  max-height: 75px;
+  max-width: 80px;
+  max-height: 24px;
   padding-left: 10px;
 }
 
@@ -20,12 +20,36 @@
 }
 
 .container {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   height: 56px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+
+.search {
+  margin: 0px 40px;
+}
+
+.search-input {
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 4px;
+}
+
+.search-icon-button {
+  border-radius: 0px 2px 2px 0px;
+  width: 65px;
+}
+
+.search-icon {
+  height: 15px;
+  width: 15px;
+}
+
+.page-manager {
+  padding: 16px 24px;
 }
 
 .App-link {
@@ -33,17 +57,50 @@
 }
 
 .title {
-  margin: 2px 8px 2px 8px;
   text-align: left;
+  text-decoration: none;
+}
+
+.title-spacing {
+  margin: 1px 1px 1px 1px;
+}
+
+/* .container-spacing {
+  margin: 2px 8px 2px 8px;
+} */
+
+.text-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-headers {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
 
 /* .title-spacing {
   padding-left: 5px;
 } */
 
+.thumbnail-size {
+  margin-right: 16px;
+  max-height: 137.641px;
+  max-width: 246px;
+}
+
 .box {
-  border: 2px solid black;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  border: 1px solid black;
+  margin-top: 16px;
+}
+
+.description-text {
+  font-size: 1rem;
+  line-height: 1.8rem;
+  margin-bottom: 8px;
+  overflow: hidden;
+  padding-top: 8px;
 }

@@ -37,20 +37,31 @@ export class Homepage extends Component {
                   to={`/${video.snippet.channelTitle}/${video.snippet.title}/v=${video.id.videoId}`}
                 >
                   <img
-                    src={`${video.snippet.thumbnails.high.url}`}
+                    className="thumbnail-size"
+                    src={`${video.snippet.thumbnails.medium.url}`}
                     alt={video.id.videoId}
                   />
                 </Link>
               </div>
-              {/* <div>{video.snippet.publishedAt}</div> */}
-              <div className="title-spacing">
+              <div className="text-wrapper">
                 <Link
+                  className="title"
                   to={`/${video.snippet.channelTitle}/${video.snippet.title}/v=${video.id.videoId}`}
                 >
-                  <h1 className="title">{video.snippet.title}</h1>
+                  <h3 className="title title-spacing">{video.snippet.title}</h3>
                 </Link>
-                <h4 className="title">{video.snippet.channelTitle}</h4>
-                {video.snippet.description}
+                <div className="sub-headers">
+                  <span className="title title-spacing">
+                    {video.snippet.channelTitle}
+                  </span>
+                  •
+                  <span className="title title-spacing">
+                    {video.snippet.publishedAt}
+                  </span>
+                </div>
+                <div className="description-text title">
+                  {video.snippet.description}
+                </div>
               </div>
             </div>
           );

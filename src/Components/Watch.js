@@ -15,17 +15,17 @@ export class Watch extends Component {
   render() {
     return (
       <div>
-        <h1>{this.state.title}</h1>
         <iframe
-          width="1169"
-          height="658"
+          width="920"
+          height="518"
           src={`https://www.youtube.com/embed/${this.state.id}`}
           frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
           title={this.state.title}
         ></iframe>
-        <header>{this.state.channel}</header>
+        <h1 className="title title-spacing">{this.state.title}</h1>
+        <h4 className="title title-spacing">{this.state.channel}</h4>
       </div>
     );
   }

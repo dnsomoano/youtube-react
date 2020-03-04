@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import logo from "./Images/YouTube_Logo_2017.svg";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import HomePage from "./Components/Homepage";
+import Search from "./Components/Search";
 import Video from "./Components/Video";
 import Watch from "./Components/Watch";
 
@@ -11,22 +12,19 @@ function App() {
     <Router>
       <div className="App">
         <div className="container">
-          {/* <div> */}
-            <img className="App-logo" src={logo} alt="logo" />
-          {/* </div> */}
-          <div>
-            <input name="searchTerm" type="Search" placeholder="Search" />
-            <button>Submit</button>
-          </div>
+          <img className="App-logo" src={logo} alt="logo" />
+          <Search />
         </div>
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route
-            path="/:channelTitle/:title/v=:videoId"
-            exact
-            component={Watch}
-          />
-        </Switch>
+        <div className="page-manager">
+          <Switch>
+            <Route path="/" exact component={HomePage} />
+            <Route
+              path="/:channelTitle/:title/v=:videoId"
+              exact
+              component={Watch}
+            />
+          </Switch>
+        </div>
       </div>
     </Router>
   );
