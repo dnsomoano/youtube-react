@@ -61,6 +61,14 @@
   text-decoration: none;
 }
 
+.text-primary {
+  color: #303030;
+}
+
+.endpoint-color {
+  color: #606060;
+}
+
 .title-spacing {
   margin: 1px 1px 1px 1px;
 }
