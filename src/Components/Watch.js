@@ -8,8 +8,26 @@ export class Watch extends Component {
       title: this.props.match.params.title,
       thumbnail: "",
       id: this.props.match.params.videoId,
-      description: ""
+      description: "",
+      views: 0
     };
+  }
+
+  componentDidMount() {
+    const url = "https://www.googleapis.com/youtube/v3/";
+    const vdResrc = "video";
+    const key = "?key=" + process.env.REACT_APP_API_KEY;
+    //  const parameters = "&part=snippet&type=video&q=
+    const apiUrl = url + vdResrc + this.state.id + key;
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          views: data.statistics.viewsCount
+        });
+          console.log(data.statistics);
+        });
+        console.log(this.state.views);
   }
 
   render() {
@@ -24,7 +42,10 @@ export class Watch extends Component {
           allowfullscreen
           title={this.state.title}
         ></iframe>
-        <h1 className="title title-spacing">{this.state.title}</h1>
+            <h1 className="title title-spacing">{this.state.title}</h1>
+            <div>
+                <span>{this.state.views} views</span>
+            </div>
         <h4 className="title title-spacing">{this.state.channel}</h4>
       </div>
     );

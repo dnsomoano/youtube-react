@@ -46,12 +46,13 @@ export class Homepage extends Component {
   }
 
   fetchVideos(pageToken) {
-    const url = "https://www.googleapis.com/youtube/v3/search?key=";
-    const key = process.env.REACT_APP_API_KEY;
+    const url = "https://www.googleapis.com/youtube/v3/";
+    const resrc = "search";
+    const key = "?key=" + process.env.REACT_APP_API_KEY;
     const parameters = "&part=snippet&type=video&q=";
     let query = "dogs";
-    const apiUrl = pageToken ? url + key + parameters + query + "&maxResults=10&order=date&pageToken=" + pageToken
-      : url + key + parameters + query + "&maxResults=10&order=date";
+    const apiUrl = pageToken ? url + resrc + key + parameters + query + "&maxResults=10&order=date&pageToken=" + pageToken
+      : url + resrc + key + parameters + query + "&maxResults=10&order=date";
     console.log(apiUrl);
     fetch(apiUrl)
       .then(resp => resp.json())
