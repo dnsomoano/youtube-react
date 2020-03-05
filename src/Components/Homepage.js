@@ -47,7 +47,7 @@ export class Homepage extends Component {
 
   fetchVideos(pageToken) {
     const url = "https://www.googleapis.com/youtube/v3/search?key=";
-    const key = "HIDDEN";
+    const key = process.env.REACT_APP_API_KEY;
     const parameters = "&part=snippet&type=video&q=";
     let query = "dogs";
     const apiUrl = pageToken ? url + key + parameters + query + "&maxResults=10&order=date&pageToken=" + pageToken
