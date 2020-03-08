@@ -112,3 +112,7 @@
   overflow: hidden;
   padding-top: 8px;
 }
+
+.video-primary-info-renderer {
+  border-bottom: 1px solid black;
+}

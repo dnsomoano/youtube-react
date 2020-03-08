@@ -5,29 +5,32 @@ export class Watch extends Component {
     super(props);
     this.state = {
       channel: this.props.match.params.channelTitle,
-      title: this.props.match.params.title,
-      thumbnail: "",
-      id: this.props.match.params.videoId,
       description: "",
+      id: this.props.match.params.videoId,
+      publishDate: "",
+      thumbnail: "",
+      title: this.props.match.params.title,
       views: 0
     };
   }
 
   componentDidMount() {
     const url = "https://www.googleapis.com/youtube/v3/";
-    const vdResrc = "video";
-    const key = "?key=" + process.env.REACT_APP_API_KEY;
+    const vdResrc = "videos?part=snippet%2CcontentDetails%2Cstatistics";
+    const key = "&key=" + process.env.REACT_APP_API_KEY;
     //  const parameters = "&part=snippet&type=video&q=
-    const apiUrl = url + vdResrc + this.state.id + key;
+    const apiUrl = url + vdResrc + "&id=" + this.state.id + key;
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         this.setState({
-          views: data.statistics.viewsCount
+          description: data.items[0].snippet.description,
+          publishDate: data.items[0].snippet.publishedAt,
+          views: data.items[0].statistics.viewCount
         });
-          console.log(data.statistics);
-        });
-        console.log(this.state.views);
+      });
+    console.log(this.state.views);
   }
 
   render() {
@@ -42,11 +45,16 @@ export class Watch extends Component {
           allowfullscreen
           title={this.state.title}
         ></iframe>
-            <h1 className="title title-spacing">{this.state.title}</h1>
-            <div>
-                <span>{this.state.views} views</span>
-            </div>
+        <h1 className="title title-spacing">{this.state.title}</h1>
+        <div className="video-primary-info-renderer">
+          <span>{this.state.views} views</span>
+          <span className="endpoint-color">•</span>
+          <span>{this.state.publishDate}</span>
+        </div>
         <h4 className="title title-spacing">{this.state.channel}</h4>
+        <div>
+          {this.state.description}
+        </div>
       </div>
     );
   }
