@@ -17,7 +17,7 @@ export class Watch extends Component {
   componentDidMount() {
     const url = "https://www.googleapis.com/youtube/v3/";
     const vdResrc = "videos?part=snippet%2CcontentDetails%2Cstatistics";
-    const key = "&key=" + process.env.REACT_APP_API_KEY;
+    const key = "&key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
     const apiUrl = url + vdResrc + "&id=" + this.state.id + key;
     fetch(apiUrl)
       .then(response => response.json())

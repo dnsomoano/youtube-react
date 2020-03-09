@@ -46,7 +46,7 @@ export class Results extends Component {
     });
     const url = "https://www.googleapis.com/youtube/v3/";
     const resrc = "search";
-    const key = "?key=" + process.env.REACT_APP_API_KEY;
+    const key = "?key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
     const parameters = "&part=snippet&type=video";
     const maxResultsParam = "&maxResults=10";
     const orderParam = "&order=date";

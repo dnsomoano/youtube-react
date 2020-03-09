@@ -24,7 +24,7 @@ function App() {
             <Route path="/" exact component={HomePage} />
             <Route path="/search/:searchTerm" exact component={Results} />
             <Route
-              path="/:channelTitle/:title/v=:videoId"
+              path="/:channelTitle/:title/:videoId"
               exact
               component={Watch}
             />
