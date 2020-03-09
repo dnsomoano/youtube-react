@@ -38,9 +38,9 @@ export class Homepage extends Component {
     const y = entities[0].boundingClientRect.y;
     if (this.state.prevY > y) {
       //const lastVideo = this.state.videos[this.state.videos.length - 1];
-      const curPage = this.state.nextPageToken;
+      const curPage = this.state.pageToken;
       this.getVideos(curPage);
-      this.setState({ page: curPage });
+      //this.setState({ page: curPage });
     }
     this.setState({ prevY: y });
   }
@@ -71,44 +71,54 @@ export class Homepage extends Component {
   // }
 
   getVideos(pageToken) {
+    this.setState({
+      isLoading: true
+    });
     const url = "https://www.googleapis.com/youtube/v3/";
     const resrc = "search";
     const key = "?key=" + process.env.REACT_APP_API_KEY;
     const parameters = "&part=snippet&type=video";
-    let query = "dogs";
+    const maxResultsParam = "&maxResults=10";
+    const orderParam = "&order=date";
+    const pageTokenParam = "&pageToken=";
+    let query = "&q=dogs";
     const apiUrl = pageToken
-      ? url +
-        resrc +
-        key +
-        parameters +
-        +"&q=" +
-        query +
-        "&maxResults=10&order=date&pageToken=" +
-        pageToken
-      : url +
-        resrc +
-        key +
-        parameters +
-        "&q=" +
-        query +
-        "&maxResults=10&order=date";
+      ? `${url}${resrc}${key}${parameters}${query}${maxResultsParam}${orderParam}${pageTokenParam}${pageToken}`
+      : `${url}${resrc}${key}${parameters}${query}${maxResultsParam}${orderParam}`;
+    //   resrc +
+    //   key +
+    //   parameters +
+    //   +
+    //   //query +
+    //   "&q=dogs&maxResults=10&order=date&pageToken=" +
+    //   pageToken
+    // : url +
+    //   resrc +
+    //   key +
+    //   parameters +
+    //   // "&q=" +
+    //   query +
+    //   "&maxResults=10&order=date";
     console.log(apiUrl);
     fetch(apiUrl)
       .then(resp => resp.json())
       .then(data => {
         let oldToken = this.state.pageToken;
-        if (!data.nextPageToken || data.nextPageToken === oldToken) {
-          this.state.videos.push(data.items);
+        if (!data.previousPageToken || data.nextPageToken === oldToken) {
+          //this.state.videos.push(data.items);
           this.setState({
             pageToken: data.nextPageToken,
             currentPage: this.state.currentPage + 1,
-            isLoading: false
+            isLoading: false,
+            videos: [...this.state.videos, ...data.items]
           });
         } else {
+          console.log("comes here");
           this.setState({
-            videos: data.items,
+            //videos: data.items,
             pageToken: data.nextPageToken
           });
+          this.state.videos.push(data.items);
         }
         // if (!this.setState.pageToken || this.state.pageToken === oldToken) {
         //   this.setState({
