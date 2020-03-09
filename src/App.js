@@ -15,7 +15,7 @@ function App() {
         <div className="container">
           <Link to={`/`}>
             <img className="App-logo logo-container" src={logo} alt="logo" />
-            <header className="header-font">Dogs</header>
+            {/* <header className="header-font">Dogs</header> */}
           </Link>
           <Search />
         </div>
