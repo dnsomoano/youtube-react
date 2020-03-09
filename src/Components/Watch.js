@@ -35,25 +35,26 @@ export class Watch extends Component {
 
   render() {
     return (
-      <div>
-        <iframe
-          width="920"
-          height="518"
-          src={`https://www.youtube.com/embed/${this.state.id}`}
-          frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          title={this.state.title}
-        ></iframe>
-        <h1 className="title title-spacing">{this.state.title}</h1>
-        <div className="video-primary-info-renderer">
-          <span>{this.state.views} views</span>
-          <span className="endpoint-color">•</span>
-          <span>{this.state.publishDate}</span>
-        </div>
-        <h4 className="title title-spacing">{this.state.channel}</h4>
+      <div className="item-background">
         <div>
-          {this.state.description}
+          <iframe
+            className="video-align"
+            width="920"
+            height="518"
+            src={`https://www.youtube.com/embed/${this.state.id}`}
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            title={this.state.title}
+          ></iframe>
+          <div className="video-primary-info-renderer left-text-align">
+            <h1 className="title title-spacing">{this.state.title}</h1>
+            <span>{this.state.views} views</span>
+            <span className="endpoint-color">•</span>
+            <span>{this.state.publishDate}</span>
+          </div>
+          <h4 className="title title-spacing">{this.state.channel}</h4>
+          <div>{this.state.description}</div>
         </div>
       </div>
     );

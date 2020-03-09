@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import "../App.css";
 import searchIcon from "../Images/Vector_search_icon.svg";
+import { Link } from "react-router-dom";
 
 export class Search extends Component {
   constructor(props) {
@@ -26,10 +28,13 @@ export class Search extends Component {
           onChange={this.handleInputChange}
           placeholder="Search"
           value={this.state.searchTerm}
+          autoFocus
         />
-        <button className="search-icon-button">
-          <img className="search-icon" src={searchIcon} alt="search-icon" />
-        </button>
+        <Link to={`/search/${this.state.searchTerm}`}>
+          <button className="search-icon-button">
+            <img className="search-icon" src={searchIcon} alt="search-icon" />
+          </button>
+        </Link>
       </div>
     );
   }

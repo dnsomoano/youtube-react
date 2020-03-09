@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import "../App.css";
 import { Link } from "react-router-dom";
-// import InfiniteLoading from "react-simple-infinite-loading";
-//import InfiniteScroll from "react-infinite-scroller";
 
-export class Homepage extends Component {
+export class Results extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,12 +9,13 @@ export class Homepage extends Component {
       currentPage: 1,
       isLoading: false,
       pageToken: "",
-      prevY: 0
+      prevY: 0,
+      searchTerm: this.props.match.params.searchTerm
     };
   }
 
   componentDidMount() {
-    this.getVideos(null);
+    this.getVideos(this.state.searchTerm, null);
 
     let options = {
       root: null,
@@ -36,12 +34,12 @@ export class Homepage extends Component {
     const y = entities[0].boundingClientRect.y;
     if (this.state.prevY > y) {
       const curPage = this.state.pageToken;
-      this.getVideos(curPage);
+      this.getVideos(this.state.searchTerm, curPage);
     }
     this.setState({ prevY: y });
   }
 
-  getVideos(pageToken) {
+  getVideos(searchTerm, pageToken) {
     this.setState({
       isLoading: true
     });
@@ -52,10 +50,10 @@ export class Homepage extends Component {
     const maxResultsParam = "&maxResults=10";
     const orderParam = "&order=date";
     const pageTokenParam = "&pageToken=";
-    let query = "&q=dogs";
+    let query = "&q=";
     const apiUrl = pageToken
-      ? `${url}${resrc}${key}${parameters}${query}${maxResultsParam}${orderParam}${pageTokenParam}${pageToken}`
-      : `${url}${resrc}${key}${parameters}${query}${maxResultsParam}${orderParam}`;
+      ? `${url}${resrc}${key}${parameters}${query}${searchTerm}${maxResultsParam}${orderParam}${pageTokenParam}${pageToken}`
+      : `${url}${resrc}${key}${parameters}${query}${searchTerm}${maxResultsParam}${orderParam}`;
     console.log(apiUrl);
     fetch(apiUrl)
       .then(resp => resp.json())
@@ -76,13 +74,7 @@ export class Homepage extends Component {
         }
       });
   }
-
   render() {
-    const loader = (
-      <div className="interactions">
-        {this.state.isLoading && <span>Loading...</span>}
-      </div>
-    );
     return (
       <div>
         <div>
@@ -154,4 +146,4 @@ export class Homepage extends Component {
   }
 }
 
-export default Homepage;
+export default Results;

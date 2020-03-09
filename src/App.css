@@ -50,6 +50,11 @@
 
 .page-manager {
   padding: 16px 24px;
+  /* background-color: white; */
+}
+
+.page-background {
+  background-color: cornflowerblue;
 }
 
 .App-link {
@@ -101,10 +106,23 @@
 .box {
   display: flex;
   flex-direction: row;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin-top: 16px;
 }
 
+.item-background {
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.video-align {
+  display: flex;
+}
+
+.left-text-align {
+  text-align: left;
+}
 .description-text {
   font-size: 1rem;
   line-height: 1.8rem;
@@ -115,4 +133,5 @@
 
 .video-primary-info-renderer {
   border-bottom: 1px solid black;
+  padding: 20px 0px 8px 0px;
 }
