@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "../App.css";
 import { Link } from "react-router-dom";
 
 export class Results extends Component {
@@ -78,17 +79,9 @@ export class Results extends Component {
     return (
       <div>
         <div>
-          {/* <InfiniteScroll
-            items={this.state.videos}
-            //itemHeight={138}
-            hasMoreItems={this.state.isLoading}
-            loadMoreItems={this.fetchVideos(this.state.pageToken)}
-            loader={loader}
-            useWindow={true}
-          > */}
           {this.state.videos.map((video, idx) => {
             return (
-              <div className="box item-background">
+              <div className="box item-background" key={idx}>
                 <div>
                   <Link
                     to={`/${video.snippet.channelTitle}/${video.snippet.title}/v=${video.id.videoId}`}

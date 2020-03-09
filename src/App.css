@@ -19,6 +19,10 @@
   color: white;
 }
 
+.header-font {
+  font-family: "Indie Flower", cursive;
+}
+
 .container {
   /* background-color: #282c34; */
   height: 56px;
@@ -26,6 +30,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+}
+
+.logo-container {
+  height: 56px;
 }
 
 .search {

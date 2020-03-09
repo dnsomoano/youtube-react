@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
-// import InfiniteLoading from "react-simple-infinite-loading";
-//import InfiniteScroll from "react-infinite-scroller";
 
 export class Homepage extends Component {
   constructor(props) {
@@ -78,25 +76,12 @@ export class Homepage extends Component {
   }
 
   render() {
-    const loader = (
-      <div className="interactions">
-        {this.state.isLoading && <span>Loading...</span>}
-      </div>
-    );
     return (
       <div>
         <div>
-          {/* <InfiniteScroll
-            items={this.state.videos}
-            //itemHeight={138}
-            hasMoreItems={this.state.isLoading}
-            loadMoreItems={this.fetchVideos(this.state.pageToken)}
-            loader={loader}
-            useWindow={true}
-          > */}
           {this.state.videos.map((video, idx) => {
             return (
-              <div className="box item-background">
+              <div className="box item-background" key={idx}>
                 <div>
                   <Link
                     to={`/${video.snippet.channelTitle}/${video.snippet.title}/v=${video.id.videoId}`}

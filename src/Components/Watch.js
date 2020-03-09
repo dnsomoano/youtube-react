@@ -18,19 +18,23 @@ export class Watch extends Component {
     const url = "https://www.googleapis.com/youtube/v3/";
     const vdResrc = "videos?part=snippet%2CcontentDetails%2Cstatistics";
     const key = "&key=" + process.env.REACT_APP_API_KEY;
-    //  const parameters = "&part=snippet&type=video&q=
     const apiUrl = url + vdResrc + "&id=" + this.state.id + key;
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        let publishDate = new Date(data.items[0].snippet.publishedAt);
+        const options = { month: "long" };
         this.setState({
           description: data.items[0].snippet.description,
-          publishDate: data.items[0].snippet.publishedAt,
+          publishDate:
+            new Intl.DateTimeFormat("en-US", options).format(publishDate) +
+            " " +
+            `${publishDate.getDate()}, ${publishDate.getFullYear()}`,
           views: data.items[0].statistics.viewCount
         });
       });
-    console.log(this.state.views);
+    // console.log(this.state.views);
   }
 
   render() {
@@ -50,7 +54,7 @@ export class Watch extends Component {
           <div className="video-primary-info-renderer left-text-align">
             <h1 className="title title-spacing">{this.state.title}</h1>
             <span>{this.state.views} views</span>
-            <span className="endpoint-color">•</span>
+            <span className="endpoint-color"> • </span>
             <span>{this.state.publishDate}</span>
           </div>
           <h4 className="title title-spacing">{this.state.channel}</h4>
