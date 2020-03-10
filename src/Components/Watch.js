@@ -70,8 +70,8 @@ export class Watch extends Component {
         <div>
           <iframe
             className="video-align"
-            width="920"
-            height="518"
+            // width="920"
+            // height="518"
             src={`https://www.youtube.com/embed/${this.state.id}`}
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"

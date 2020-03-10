@@ -26,7 +26,9 @@ function App() {
             <Route path="/:channelId/v=:videoId" exact component={Watch} />
           </Switch>
         </div>
-        <footer id="dev-footer">® Created by Daniel N Somoano</footer>
+        <a href="https://github.com/dnsomoano">
+          <footer id="dev-footer">® Created by Daniel N Somoano</footer>
+        </a>
       </div>
     </Router>
   );
