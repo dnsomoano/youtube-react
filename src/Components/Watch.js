@@ -152,14 +152,16 @@ export class Watch extends Component {
     return (
       <div className="item-background">
         <div>
-          <iframe
-            className="video-align"
-            src={`https://www.youtube.com/embed/${this.state.id}`}
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            title={this.state.title}
-          ></iframe>
+          <div>
+            <iframe
+              className="video-align"
+              src={`https://www.youtube.com/embed/${this.state.id}`}
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              title={this.state.title}
+            ></iframe>
+          </div>
           <div className="video-primary-info-renderer left-text-align">
             <a
               className="remove-underline"

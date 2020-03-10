@@ -21,6 +21,10 @@
 
 .header-font {
   font-family: "Indie Flower", cursive;
+  color: cornflowerblue;
+  font-weight: bold;
+  margin-top: -12px;
+  padding-left: 20px;
   text-decoration: none;
 }
 
@@ -248,6 +252,10 @@
     padding-left: 6px;
   }
 
+  /* .header-font {
+    padding-left: 12px;
+  } */
+
   .search {
     margin: 0px 28px;
   }
@@ -299,6 +307,10 @@
     max-height: 50%;
     padding-left: 5px;
   }
+
+  /* .header-font {
+    padding-left: 12px;
+  } */
 
   .logo-container {
     height: 20px;
