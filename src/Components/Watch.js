@@ -7,10 +7,16 @@ export class Watch extends Component {
     this.state = {
       channel: "",
       channelId: this.props.match.params.channelId,
+      channelProfileImg: "",
+      channelUrl: "",
       commentCount: 0,
       comments: [],
       description: "",
+      dislikeCount: 0,
       id: this.props.match.params.videoId,
+      likeCount: 0,
+      pageToken: "",
+      prevY: 0,
       publishDate: "",
       thumbnail: "",
       title: "",
@@ -48,9 +54,14 @@ export class Watch extends Component {
         const options = { month: "long" };
         this.setState({
           channel: dataResponse.data.items[0].snippet.channelTitle,
+          channelProfileImg: "",
+          channelUrl: "",
           commentCount: dataResponse.data.items[0].statistics.commentCount,
           comments: commentsResponse.data.items,
           description: dataResponse.data.items[0].snippet.description,
+          dislikeCount: dataResponse.data.items[0].statistics.dislikeCount,
+          likeCount: dataResponse.data.items[0].statistics.likeCount,
+          pageToken: commentsResponse.data.nextPageToken,
           publishDate:
             new Intl.DateTimeFormat("en-US", options).format(publishDate) +
             " " +
@@ -59,9 +70,55 @@ export class Watch extends Component {
           views: dataResponse.data.items[0].statistics.viewCount
         });
         console.log(commentsResponse);
-        // console.log(this.state.comments);
       })
     );
+    let options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0
+    };
+
+    this.observer = new IntersectionObserver(
+      this.handleObserver.bind(this),
+      options
+    );
+    this.observer.observe(this.loadingRef);
+  }
+
+  getComments(pageToken) {
+    // Comments Endpoint
+    const url = "https://www.googleapis.com/youtube/v3/";
+    const key = "key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
+    const commentsRsrc = "commentThreads";
+    const commentsParameters = "&textFormat=plainText&part=snippet&videoId=";
+    let pageTokenParam = `&pageToken=${pageToken}`;
+    let commentUrl =
+      url +
+      commentsRsrc +
+      "?" +
+      key +
+      commentsParameters +
+      this.state.id +
+      pageTokenParam;
+    Axios.get(commentUrl).then(commentResponse => {
+      this.state.comments.push(commentResponse.data.items);
+      if (commentResponse.data.nextPageToken) {
+        this.setState({
+          pageToken: commentResponse.data.nextPageToken
+        });
+      }
+    });
+  }
+
+  handleObserver(entities, observer) {
+    const y = entities[0].boundingClientRect.y;
+    if (this.state.prevY > y) {
+      const curPage = this.state.pageToken;
+      if (curPage) {
+        this.getComments(curPage);
+      }
+    }
+    this.setState({ prevY: y });
   }
 
   render() {
@@ -70,8 +127,6 @@ export class Watch extends Component {
         <div>
           <iframe
             className="video-align"
-            // width="920"
-            // height="518"
             src={`https://www.youtube.com/embed/${this.state.id}`}
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -79,13 +134,31 @@ export class Watch extends Component {
             title={this.state.title}
           ></iframe>
           <div className="video-primary-info-renderer left-text-align">
-            <h1 className="title title-spacing">{this.state.title}</h1>
+            <a
+              className="remove-underline"
+              href={`https://www.youtube.com/watch?v=${this.state.id}`}
+            >
+              <h1 className="title title-spacing">{this.state.title}</h1>
+            </a>
             <span>{this.state.views} views</span>
             <span className="endpoint-color"> • </span>
             <span>{this.state.publishDate}</span>
+            <span> {this.state.likeCount} Likes </span>
+            <span> {this.state.dislikeCount} Dislikes </span>
           </div>
-          <h4 className="title title-spacing">{this.state.channel}</h4>
-          <div className="title">{this.state.description}</div>
+          <div className="channel-container">
+            <a className="remove-underline" href={`${this.state.channelUrl}`}>
+              <img
+                className="profile-img"
+                src={`${this.state.channelProfileImg}`}
+                alt={this.state.channelId}
+              />
+              <h4 className="title title-spacing">{this.state.channel}</h4>
+            </a>
+          </div>
+          <div className="title video-secondary-info-renderer">
+            {this.state.description}
+          </div>
         </div>
         <h2 className="total-comments-header">
           {this.state.commentCount} Comments
@@ -126,10 +199,29 @@ export class Watch extends Component {
                   <div className="title">
                     {comment.snippet.topLevelComment.snippet.textDisplay}
                   </div>
+                  <div className="comment-counts">
+                    <span>
+                      {comment.snippet.topLevelComment.snippet.likeCount} Likes
+                    </span>
+                    <span>
+                      {comment.snippet.topLevelComment.snippet.dislikeCount}
+                      Dislikes
+                    </span>
+                  </div>
                 </div>
               </div>
             );
           })}
+          <div
+            ref={loadingRef => (this.loadingRef = loadingRef)}
+            //style={loadingCSS}
+          >
+            <span
+            //style={loadingTextCSS}
+            >
+              Loading...
+            </span>
+          </div>
         </div>
       </div>
     );
