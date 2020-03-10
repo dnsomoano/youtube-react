@@ -10,7 +10,7 @@ export class Search extends Component {
       searchTerm: ""
     };
   }
-
+  // TODO fix issue with double searching
   handleInputChange = event => {
     event.preventDefault();
     this.setState({

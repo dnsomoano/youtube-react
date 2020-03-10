@@ -54,6 +54,7 @@ export class Watch extends Component {
         const options = { month: "long" };
         this.setState({
           channel: dataResponse.data.items[0].snippet.channelTitle,
+          // TODO add profile image and url links
           channelProfileImg: "",
           channelUrl: "",
           commentCount: dataResponse.data.items[0].statistics.commentCount,
