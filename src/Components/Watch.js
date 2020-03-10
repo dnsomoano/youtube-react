@@ -14,6 +14,7 @@ export class Watch extends Component {
       description: "",
       dislikeCount: 0,
       id: this.props.match.params.videoId,
+      isLoading: false,
       likeCount: 0,
       pageToken: "",
       prevY: 0,
@@ -40,38 +41,50 @@ export class Watch extends Component {
     const commentsParameters = "&textFormat=plainText&part=snippet&videoId=";
     let commentUrl =
       url + commentsRsrc + "?" + key + commentsParameters + this.state.id;
+    this.setState({
+      isLoading: true
+    });
     // Fetches
     Axios.all([
       Axios.get(apiUrl),
-      Axios.get(channelUrl),
+      // Axios.get(channelUrl),
       Axios.get(commentUrl)
     ]).then(
-      Axios.spread((dataResponse, channelResponse, commentsResponse) => {
-        console.log(channelResponse);
-        let publishDate = new Date(
-          dataResponse.data.items[0].snippet.publishedAt
-        );
-        const options = { month: "long" };
-        this.setState({
-          channel: dataResponse.data.items[0].snippet.channelTitle,
-          // TODO add profile image and url links
-          channelProfileImg: "",
-          channelUrl: "",
-          commentCount: dataResponse.data.items[0].statistics.commentCount,
-          comments: commentsResponse.data.items,
-          description: dataResponse.data.items[0].snippet.description,
-          dislikeCount: dataResponse.data.items[0].statistics.dislikeCount,
-          likeCount: dataResponse.data.items[0].statistics.likeCount,
-          pageToken: commentsResponse.data.nextPageToken,
-          publishDate:
-            new Intl.DateTimeFormat("en-US", options).format(publishDate) +
-            " " +
-            `${publishDate.getDate()}, ${publishDate.getFullYear()}`,
-          title: dataResponse.data.items[0].title,
-          views: dataResponse.data.items[0].statistics.viewCount
-        });
-        console.log(commentsResponse);
-      })
+      Axios.spread(
+        (
+          dataResponse,
+          // channelResponse,
+          commentsResponse
+        ) => {
+          // console.log(dataResponse);
+          // console.log(dataResponse.data.items[0].snippet);
+          // console.log(channelResponse);
+          let publishDate = new Date(
+            dataResponse.data.items[0].snippet.publishedAt
+          );
+          const options = { month: "long" };
+          this.setState({
+            channel: dataResponse.data.items[0].snippet.channelTitle,
+            // TODO add profile image and url links
+            channelProfileImg: "",
+            channelUrl: "",
+            commentCount: dataResponse.data.items[0].statistics.commentCount,
+            comments: [...this.state.comments, ...commentsResponse.data.items],
+            description: dataResponse.data.items[0].snippet.description,
+            dislikeCount: dataResponse.data.items[0].statistics.dislikeCount,
+            isLoading: false,
+            likeCount: dataResponse.data.items[0].statistics.likeCount,
+            pageToken: commentsResponse.data.nextPageToken,
+            publishDate:
+              new Intl.DateTimeFormat("en-US", options).format(publishDate) +
+              " " +
+              `${publishDate.getDate()}, ${publishDate.getFullYear()}`,
+            title: dataResponse.data.items[0].title,
+            views: dataResponse.data.items[0].statistics.viewCount
+          });
+          console.log(this.state.comments.length);
+        }
+      )
     );
     let options = {
       root: null,
@@ -87,28 +100,41 @@ export class Watch extends Component {
   }
 
   getComments(pageToken) {
-    // Comments Endpoint
-    const url = "https://www.googleapis.com/youtube/v3/";
-    const key = "key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
-    const commentsRsrc = "commentThreads";
-    const commentsParameters = "&textFormat=plainText&part=snippet&videoId=";
-    let pageTokenParam = `&pageToken=${pageToken}`;
-    let commentUrl =
-      url +
-      commentsRsrc +
-      "?" +
-      key +
-      commentsParameters +
-      this.state.id +
-      pageTokenParam;
-    Axios.get(commentUrl).then(commentResponse => {
-      this.state.comments.push(commentResponse.data.items);
-      if (commentResponse.data.nextPageToken) {
+    console.log(pageToken);
+    if (pageToken !== this.state.pageToken) {
+      // Comments Endpoint
+      const url = "https://www.googleapis.com/youtube/v3/";
+      const key = "key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
+      const commentsRsrc = "commentThreads";
+      const commentsParameters = "&textFormat=plainText&part=snippet&videoId=";
+      let pageTokenParam = `&pageToken=${pageToken}`;
+      let commentUrl =
+        url +
+        commentsRsrc +
+        "?" +
+        key +
+        commentsParameters +
+        this.state.id +
+        pageTokenParam;
+      this.setState({
+        isLoading: true
+      });
+      Axios.get(commentUrl).then(commentResponse => {
+        console.log(commentResponse);
         this.setState({
-          pageToken: commentResponse.data.nextPageToken
+          comments: [...this.state.comments, ...commentResponse.data.items]
         });
-      }
-    });
+        if (commentResponse.data.nextPageToken) {
+          this.setState({
+            pageToken: commentResponse.data.nextPageToken
+          });
+        }
+        this.setState({
+          isLoading: false
+        });
+        console.log(this.state.comments.length);
+      });
+    }
   }
 
   handleObserver(entities, observer) {
@@ -141,11 +167,18 @@ export class Watch extends Component {
             >
               <h1 className="title title-spacing">{this.state.title}</h1>
             </a>
-            <span>{this.state.views} views</span>
-            <span className="endpoint-color"> • </span>
-            <span>{this.state.publishDate}</span>
-            <span> {this.state.likeCount} Likes </span>
-            <span> {this.state.dislikeCount} Dislikes </span>
+            <div className="video-details">
+              <span>{this.state.views} views</span>
+              <span className="endpoint-color"> • </span>
+              <span>{this.state.publishDate}</span>
+            </div>
+            <div className="count-details">
+              <span className="count-offset">
+                {" "}
+                {this.state.likeCount} Likes{" "}
+              </span>
+              <span> {this.state.dislikeCount} Dislikes </span>
+            </div>
           </div>
           <div className="channel-container">
             <a className="remove-underline" href={`${this.state.channelUrl}`}>
@@ -182,17 +215,27 @@ export class Watch extends Component {
                 </a>
                 <div className="comment-renderer">
                   <div className="header-container">
-                    <a
-                      className="remove-underline"
-                      href={`${comment.snippet.topLevelComment.snippet.authorChannelUrl}`}
-                    >
+                    {comment.snippet.topLevelComment.snippet
+                      .authorChannelUrl ? (
+                      <a
+                        className="remove-underline"
+                        href={`${comment.snippet.topLevelComment.snippet.authorChannelUrl}`}
+                      >
+                        <span className="author-header">
+                          {
+                            comment.snippet.topLevelComment.snippet
+                              .authorDisplayName
+                          }
+                        </span>
+                      </a>
+                    ) : (
                       <span className="author-header">
                         {
                           comment.snippet.topLevelComment.snippet
                             .authorDisplayName
                         }
                       </span>
-                    </a>
+                    )}
                     <span className="endpoint-color">
                       {comment.snippet.topLevelComment.snippet.publishedAt}
                     </span>
@@ -201,13 +244,22 @@ export class Watch extends Component {
                     {comment.snippet.topLevelComment.snippet.textDisplay}
                   </div>
                   <div className="comment-counts">
-                    <span>
-                      {comment.snippet.topLevelComment.snippet.likeCount} Likes
-                    </span>
-                    <span>
-                      {comment.snippet.topLevelComment.snippet.dislikeCount}
-                      Dislikes
-                    </span>
+                    {comment.snippet.topLevelComment.snippet.likeCount ? (
+                      <span>
+                        {comment.snippet.topLevelComment.snippet.likeCount}{" "}
+                        Likes
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+                    {comment.snippet.topLevelComment.snippet.dislikeCount ? (
+                      <span>
+                        {comment.snippet.topLevelComment.snippet.dislikeCount}{" "}
+                        Dislikes
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
                   </div>
                 </div>
               </div>
