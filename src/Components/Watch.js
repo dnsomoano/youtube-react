@@ -4,12 +4,12 @@ export class Watch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      channel: this.props.match.params.channelTitle,
+      channel: "",
       description: "",
       id: this.props.match.params.videoId,
       publishDate: "",
       thumbnail: "",
-      title: this.props.match.params.title,
+      title: "",
       views: 0
     };
   }
@@ -26,11 +26,13 @@ export class Watch extends Component {
         let publishDate = new Date(data.items[0].snippet.publishedAt);
         const options = { month: "long" };
         this.setState({
+          channel: data.items[0].snippet.channelTitle,
           description: data.items[0].snippet.description,
           publishDate:
             new Intl.DateTimeFormat("en-US", options).format(publishDate) +
             " " +
             `${publishDate.getDate()}, ${publishDate.getFullYear()}`,
+          title: data.items[0].title,
           views: data.items[0].statistics.viewCount
         });
       });

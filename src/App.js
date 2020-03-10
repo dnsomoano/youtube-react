@@ -23,11 +23,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/search/:searchTerm" exact component={Results} />
-            <Route
-              path="/:channelTitle/:title/:videoId"
-              exact
-              component={Watch}
-            />
+            <Route path="/v=:videoId" exact component={Watch} />
           </Switch>
         </div>
       </div>
