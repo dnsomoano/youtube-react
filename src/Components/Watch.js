@@ -6,6 +6,8 @@ export class Watch extends Component {
     super(props);
     this.state = {
       channel: "",
+      channelId: this.props.match.params.channelId,
+      commentCount: 0,
       comments: [],
       description: "",
       id: this.props.match.params.videoId,
@@ -21,19 +23,32 @@ export class Watch extends Component {
     const vdResrc = "videos?part=snippet%2CcontentDetails%2Cstatistics";
     const key = "key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
     const apiUrl = url + vdResrc + "&id=" + this.state.id + "&" + key;
+    // Channel endpoint
+    const channelRsrc = "channels";
+    const channelIdParam = "?id=";
+    const channelParams = "&part=contentDetails";
+    const channelUrl =
+      url + channelRsrc + channelIdParam + this.state.channelId + channelParams;
     // Comments Endpoint
     const commentsRsrc = "commentThreads";
     const commentsParameters = "&textFormat=plainText&part=snippet&videoId=";
     let commentUrl =
       url + commentsRsrc + "?" + key + commentsParameters + this.state.id;
-    Axios.all([Axios.get(apiUrl), Axios.get(commentUrl)]).then(
-      Axios.spread((dataResponse, commentsResponse) => {
+    // Fetches
+    Axios.all([
+      Axios.get(apiUrl),
+      Axios.get(channelUrl),
+      Axios.get(commentUrl)
+    ]).then(
+      Axios.spread((dataResponse, channelResponse, commentsResponse) => {
+        console.log(channelResponse);
         let publishDate = new Date(
           dataResponse.data.items[0].snippet.publishedAt
         );
         const options = { month: "long" };
         this.setState({
           channel: dataResponse.data.items[0].snippet.channelTitle,
+          commentCount: dataResponse.data.items[0].statistics.commentCount,
           comments: commentsResponse.data.items,
           description: dataResponse.data.items[0].snippet.description,
           publishDate:
@@ -70,13 +85,15 @@ export class Watch extends Component {
             <span>{this.state.publishDate}</span>
           </div>
           <h4 className="title title-spacing">{this.state.channel}</h4>
-          <div>{this.state.description}</div>
+          <div className="title">{this.state.description}</div>
         </div>
-        <h2 className="total-comments-header">Comments</h2>
+        <h2 className="total-comments-header">
+          {this.state.commentCount} Comments
+        </h2>
         <div>
           {this.state.comments.map(comment => {
             return (
-              <div className="comment-thread">
+              <div className="comment-thread" key={comment.id}>
                 <a
                   href={`${comment.snippet.topLevelComment.snippet.authorChannelUrl}`}
                 >
@@ -106,7 +123,7 @@ export class Watch extends Component {
                       {comment.snippet.topLevelComment.snippet.publishedAt}
                     </span>
                   </div>
-                  <div>
+                  <div className="title">
                     {comment.snippet.topLevelComment.snippet.textDisplay}
                   </div>
                 </div>

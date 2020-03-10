@@ -83,7 +83,9 @@ export class Results extends Component {
             return (
               <div className="box item-background" key={idx}>
                 <div>
-                  <Link to={`/v=${video.id.videoId}`}>
+                  <Link
+                    to={`/${video.snippet.channelId}/v=${video.id.videoId}`}
+                  >
                     <img
                       className="thumbnail-size"
                       src={`${video.snippet.thumbnails.medium.url}`}
@@ -92,7 +94,10 @@ export class Results extends Component {
                   </Link>
                 </div>
                 <div className="text-wrapper">
-                  <Link className="title" to={`/v=${video.id.videoId}`}>
+                  <Link
+                    className="title"
+                    to={`/${video.snippet.channelId}/v=${video.id.videoId}`}
+                  >
                     <h3 className="text-primary title title-spacing">
                       {video.snippet.title}
                     </h3>
@@ -102,7 +107,10 @@ export class Results extends Component {
                       {video.snippet.channelTitle}
                     </span>
                     <span className="endpoint-color">•</span>
-                    <Link className="title" to={`/v=${video.id.videoId}`}>
+                    <Link
+                      className="title"
+                      to={`/${video.snippet.channelId}/v=${video.id.videoId}`}
+                    >
                       <span className="endpoint-color title title-spacing">
                         {video.snippet.publishedAt}
                       </span>

@@ -12,6 +12,7 @@ export class Search extends Component {
   }
 
   handleInputChange = event => {
+    event.preventDefault();
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -21,20 +22,22 @@ export class Search extends Component {
   render() {
     return (
       <div className="search">
-        <input
-          className="search-input"
-          name="searchTerm"
-          type="Search"
-          onChange={this.handleInputChange}
-          placeholder="Search"
-          value={this.state.searchTerm}
-          autoFocus
-        />
-        <Link to={`/search/${this.state.searchTerm}`}>
-          <button className="search-icon-button">
-            <img className="search-icon" src={searchIcon} alt="search-icon" />
-          </button>
-        </Link>
+        <form onSubmit={this.handleInputChange}>
+          <input
+            className="search-input"
+            name="searchTerm"
+            type="Search"
+            onChange={this.handleInputChange}
+            placeholder="Search"
+            value={this.state.searchTerm}
+            autoFocus
+          />
+          <Link to={`/search/${this.state.searchTerm}`}>
+            <button className="search-icon-button" type="submit">
+              <img className="search-icon" src={searchIcon} alt="search-icon" />
+            </button>
+          </Link>
+        </form>
       </div>
     );
   }

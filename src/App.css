@@ -70,6 +70,16 @@
   color: #61dafb;
 }
 
+#dev-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  background-color: #373636;
+  color: #e8eddf;
+  font-size: 0.8em;
+  margin-right: 0.4em;
+}
+
 .title {
   text-align: left;
   text-decoration: none;
@@ -147,6 +157,7 @@
 
 .total-comments-header {
   margin: 0 32px 0 0;
+  text-align: left;
 }
 
 .profile-img {
