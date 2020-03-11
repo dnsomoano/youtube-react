@@ -79,9 +79,9 @@ export class Homepage extends Component {
     return (
       <div>
         <div>
-          {this.state.videos.map(video => {
+          {this.state.videos.map((video, idx) => {
             return (
-              <div className="box item-background" key={video.id.videoId}>
+              <div className="box item-background" key={idx}>
                 <div>
                   <Link
                     to={`/${video.snippet.channelId}/v=${video.id.videoId}`}

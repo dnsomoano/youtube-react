@@ -31,11 +31,11 @@ export class Watch extends Component {
     const key = "key=AIzaSyAJz_naVGZdUyHKo66ByxZO4zNtGW0k2Ng";
     const apiUrl = url + vdResrc + "&id=" + this.state.id + "&" + key;
     // Channel endpoint
-    const channelRsrc = "channels";
-    const channelIdParam = "?id=";
-    const channelParams = "&part=contentDetails";
-    const channelUrl =
-      url + channelRsrc + channelIdParam + this.state.channelId + channelParams;
+    // const channelRsrc = "channels";
+    // const channelIdParam = "?id=";
+    // const channelParams = "&part=contentDetails";
+    // const channelUrl =
+    //   url + channelRsrc + channelIdParam + this.state.channelId + channelParams;
     // Comments Endpoint
     const commentsRsrc = "commentThreads";
     const commentsParameters = "&textFormat=plainText&part=snippet&videoId=";
@@ -184,11 +184,11 @@ export class Watch extends Component {
           </div>
           <div className="channel-container">
             <a className="remove-underline" href={`${this.state.channelUrl}`}>
-              <img
+              {/* <img
                 className="profile-img"
                 src={`${this.state.channelProfileImg}`}
                 alt={this.state.channelId}
-              />
+              /> */}
               <h4 className="title title-spacing">{this.state.channel}</h4>
             </a>
           </div>
@@ -206,14 +206,17 @@ export class Watch extends Component {
                 <a
                   href={`${comment.snippet.topLevelComment.snippet.authorChannelUrl}`}
                 >
-                  <img
+                {comment.snippet.topLevelComment.snippet.authorProfileImageUrl ?
+                  (<img
                     className="profile-img"
                     src={`${comment.snippet.topLevelComment.snippet.authorProfileImageUrl}`}
                     alt={
-                      comment.snippet.topLevelComment.snippet.authorChannelId
-                        .value
-                    }
+                    comment.snippet.topLevelComment.id}
+                    //     .value
+                    // }
                   />
+                  ) : (<span></span>)
+                }
                 </a>
                 <div className="comment-renderer">
                   <div className="header-container">
